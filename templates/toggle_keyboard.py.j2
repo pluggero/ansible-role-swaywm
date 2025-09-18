@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+import json
+import subprocess
+import sys
+
+
+def get_internal_keyboard_identifier():
+    result = subprocess.run(["swaymsg", "-t", "get_inputs"], stdout=subprocess.PIPE)
+    devices = json.loads(result.stdout)
+    for device in devices:
+        if "AT Translated Set 2 keyboard" in device.get(
+            "name", ""
+        ):  # Typical name for internal keyboards
+            return device["identifier"]
+    return None
+
+
+def get_keyboard_state(identifier):
+    result = subprocess.run(["swaymsg", "-t", "get_inputs"], stdout=subprocess.PIPE)
+    devices = json.loads(result.stdout)
+    for device in devices:
+        if device.get("identifier") == identifier:
+            return device.get("libinput", {}).get("send_events", "enabled")
+    return "unknown"
+
+
+def toggle_keyboard():
+    identifier = get_internal_keyboard_identifier()
+    if not identifier:
+        print("Internal keyboard not found")
+        sys.exit(1)
+
+    current_state = get_keyboard_state(identifier)
+    if current_state == "enabled":
+        command = ["swaymsg", "input", identifier, "events", "disabled"]
+    else:
+        command = ["swaymsg", "input", identifier, "events", "enabled"]
+
+    subprocess.run(command)
+
+
+def print_keyboard_state():
+    """
+    Prints the keyboard state in JSON format suitable for Waybar.
+    """
+    try:
+        identifier = get_internal_keyboard_identifier()
+        if not identifier:
+            raise ValueError("Internal keyboard not found")
+
+        current_state = get_keyboard_state(identifier)
+        if current_state == "enabled":
+            output = {
+                "text": "<span font='12'>󰌌</span>",
+                "tooltip": "Keyboard: enabled",
+                "class": "keyboard.enabled",
+            }
+        else:
+            output = {
+                "text": "<span color='#af1601'><span font='12'>󰌐</span></span>",
+                "tooltip": "Keyboard: disabled",
+                "class": "keyboard.disabled",
+            }
+
+    except Exception as e:
+        output = {
+            "text": str(e),
+            "tooltip": "Error retrieving keyboard state",
+            "class": "keyboard.error",
+        }
+
+    print(json.dumps(output))
+
+
+if __name__ == "__main__":
+    if "--state" in sys.argv:
+        print_keyboard_state()
+    else:
+        toggle_keyboard()
+

@@ -1,0 +1,36 @@
+---
+- name: Configure swayidle systemd user service
+  when: swaywm_swayidle_enabled | bool
+  block:
+    - name: Ensure systemd user config directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.config/systemd/user"
+        state: directory
+        mode: "0700"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Deploy sway-session target
+      ansible.builtin.copy:
+        src: "sway-session.target"
+        dest: "{{ ansible_env.HOME }}/.config/systemd/user/sway-session.target"
+        mode: "0700"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Deploy swayidle systemd service
+      ansible.builtin.template:
+        src: "swayidle.service.j2"
+        dest: "{{ ansible_env.HOME }}/.config/systemd/user/swayidle.service"
+        mode: "0700"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      notify: Restart swayidle service
+
+    - name: Enable swayidle service
+      ansible.builtin.systemd:
+        name: swayidle.service
+        scope: user
+        enabled: true
+        daemon_reload: true
+      become: false

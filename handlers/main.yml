@@ -1,0 +1,8 @@
+---
+- name: Restart swayidle service
+  ansible.builtin.systemd:
+    name: swayidle.service
+    scope: user
+    state: restarted
+  become: false
+  when: swaywm_swayidle_enabled | bool

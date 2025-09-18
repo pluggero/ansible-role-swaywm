@@ -1,0 +1,415 @@
+---
+# =============================================================================
+# Installation Settings
+# =============================================================================
+swaywm_install_method: "package"
+swaywm_config_dir: "{{ ansible_env.HOME }}/.config/sway"
+swaywm_config_file: "{{ swaywm_config_dir }}/config"
+
+# =============================================================================
+# General Settings
+# =============================================================================
+swaywm_modifier: "Mod1"
+
+# Media control settings
+swaywm_enable_media_keys: true
+swaywm_volume_step: 5
+swaywm_brightness_step: 5
+swaywm_disable_beep: true
+
+# =============================================================================
+# Visual & Layout Settings
+# =============================================================================
+swaywm_font:
+  size: 10
+  family: "Hack Nerd Font"
+swaywm_focus_follows_mouse: true
+
+# Wallpaper and Screensaver settings
+swaywm_wallpaper_image_name: "wallpaper.jpg"
+swaywm_wallpaper_image_local: "files/{{ swaywm_wallpaper_image_name }}"
+swaywm_wallpaper_image: "{{ swaywm_config_dir }}/{{ swaywm_wallpaper_image_name }}"
+swaywm_lockscreen_image_name: "lockscreen.jpg"
+swaywm_lockscreen_image_local: "files/{{ swaywm_lockscreen_image_name }}"
+swaywm_lockscreen_image: "{{ swaywm_config_dir }}/{{ swaywm_lockscreen_image_name }}"
+
+# Layout Settings
+swaywm_gaps:
+  inner: 6
+  outer: 0
+swaywm_borders:
+  default: normal
+  default_floating: normal
+  width: 2
+  hide_edge_borders: none
+
+# =============================================================================
+# Color Themes
+# =============================================================================
+# Window Colors
+swaywm_colors:
+  focused:
+    border: "#83a598"
+    background: "#282828"
+    text: "#d5c4a1"
+    indicator: "#b8bb26"
+    child_border: "#83a598"
+  focused_inactive:
+    border: "#665c54"
+    background: "#282828"
+    text: "#d5c4a1"
+    indicator: "#b8bb26"
+    child_border: "#665c54"
+  unfocused:
+    border: "#665c54"
+    background: "#282828"
+    text: "#d5c4a1"
+    indicator: "#b8bb26"
+    child_border: "#665c54"
+  urgent:
+    border: "#fb4934"
+    background: "#282828"
+    text: "#d5c4a1"
+    indicator: "#b8bb26"
+    child_border: "#fb4934"
+  placeholder:
+    border: "#665c54"
+    background: "#282828"
+    text: "#d5c4a1"
+    indicator: "#b8bb26"
+    child_border: "#665c54"
+  background: "#282828"
+
+# Bar Colors
+swaywm_bar_colors:
+  background: "#282828"
+  statusline: "#d5c4a1"
+  separator: "#665c54"
+  focused_workspace:
+    border: "#83a598"
+    background: "#282828"
+    text: "#d5c4a1"
+  active_workspace:
+    border: "#282828"
+    background: "#282828"
+    text: "#83a598"
+  inactive_workspace:
+    border: "#282828"
+    background: "#282828"
+    text: "#d5c4a1"
+  urgent_workspace:
+    border: "#fb4934"
+    background: "#282828"
+    text: "#d5c4a1"
+  binding_mode:
+    border: "#282828"
+    background: "#fb4934"
+    text: "#d5c4a1"
+
+# =============================================================================
+# Keybinding Configuration
+# =============================================================================
+# Exec keybindings for launching applications
+swaywm_keybindings_exec: []
+#  - key: $mod+Return
+#    exec: "i3-sensible-terminal"
+
+# Focus keybindings for window navigation
+swaywm_keybindings_focus:
+  - key: $mod+Up
+    action: "focus up"
+  - key: $mod+k
+    action: "focus up"
+  - key: $mod+Down
+    action: "focus down"
+  - key: $mod+j
+    action: "focus down"
+  - key: $mod+Left
+    action: "focus left"
+  - key: $mod+h
+    action: "focus left"
+  - key: $mod+Right
+    action: "focus right"
+  - key: $mod+l
+    action: "focus right"
+  - key: $mod+a
+    action: "focus parent"
+  - key: $mod+x
+    action: "focus child"
+  - key: $mod+space
+    action: "floating toggle"
+  - key: $mod+Shift+space
+    action: "focus mode_toggle"
+  - key: $mod+f
+    action: "fullscreen"
+
+# Move keybindings for moving containers
+swaywm_keybindings_move:
+  - key: $mod+Shift+Up
+    action: "move up"
+  - key: $mod+Shift+k
+    action: "move up"
+  - key: $mod+Shift+Down
+    action: "move down"
+  - key: $mod+Shift+j
+    action: "move down"
+  - key: $mod+Shift+Left
+    action: "move left"
+  - key: $mod+Shift+h
+    action: "move left"
+  - key: $mod+Shift+Right
+    action: "move right"
+  - key: $mod+Shift+l
+    action: "move right"
+  - key: $mod+Shift+comma
+    action: "move workspace to output left"
+  - key: $mod+Shift+period
+    action: "move workspace to output right"
+
+# Layout keybindings for changing layouts
+swaywm_keybindings_layout:
+  - key: $mod+m
+    action: "split h"
+  - key: $mod+n
+    action: "split v"
+  - key: $mod+s
+    action: "layout stacking"
+  - key: $mod+t
+    action: "layout tabbed"
+  - key: $mod+w
+    action: "layout toggle split"
+
+# System keybindings for sway control
+swaywm_keybindings_system:
+  - key: $mod+Shift+q
+    action: "kill"
+  - key: $mod+Shift+r
+    action: "reload"
+  - key: $mod+Shift+e
+    action: 'exec swaynag -t warning -m "You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session." -b "Yes, exit sway" "swaymsg exit"'
+
+# Mode keybindings (resize mode)
+swaywm_keybindings_resize:
+  enter_key: $mod+r
+  bindings:
+    - key: Up
+      action: "resize shrink height 10 px or 10 ppt"
+    - key: k
+      action: "resize grow height 10 px or 10 ppt"
+    - key: Down
+      action: "resize grow height 10 px or 10 ppt"
+    - key: j
+      action: "resize shrink width 10 px or 10 ppt"
+    - key: Left
+      action: "resize shrink width 10 px or 10 ppt"
+    - key: h
+      action: "resize grow width 10 px or 10 ppt"
+    - key: Right
+      action: "resize grow width 10 px or 10 ppt"
+    - key: l
+      action: "resize shrink height 10 px or 10 ppt"
+    - key: Escape
+      action: "mode default"
+    - key: Return
+      action: "mode default"
+
+# Quick resize keybindings (outside resize mode)
+swaywm_keybindings_quick_resize:
+  - key: $mod+Control+Down
+    action: "resize grow height 10"
+  - key: $mod+Control+Left
+    action: "resize shrink width 10"
+  - key: $mod+Control+Right
+    action: "resize grow width 10"
+  - key: $mod+Control+Up
+    action: "resize shrink height 10"
+
+# Media/hardware keybindings
+swaywm_keybindings_media:
+  volume_down:
+    key: XF86AudioLowerVolume
+    action: "exec pactl set-sink-volume @DEFAULT_SINK@ -{{ swaywm_volume_step }}%"
+  volume_up:
+    key: XF86AudioRaiseVolume
+    action: "exec pactl set-sink-volume @DEFAULT_SINK@ +{{ swaywm_volume_step }}%"
+  volume_mute:
+    key: XF86AudioMute
+    action: "exec pactl set-sink-mute @DEFAULT_SINK@ toggle"
+  mic_mute:
+    key: XF86AudioMicMute
+    action: "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+  brightness_down:
+    key: XF86MonBrightnessDown
+    action: "exec brightnessctl set {{ swaywm_brightness_step }}%-"
+  brightness_up:
+    key: XF86MonBrightnessUp
+    action: "exec brightnessctl set +{{ swaywm_brightness_step }}%"
+
+# =============================================================================
+# Workspace Configuration
+# =============================================================================
+swaywm_workspaces:
+  - id: 1
+    key: "1"
+    name: "1"
+  - id: 2
+    key: "2"
+    name: "2"
+  - id: 3
+    key: "3"
+    name: "3"
+  - id: 4
+    key: "4"
+    name: "4"
+  - id: 5
+    key: "5"
+    name: "5"
+  - id: 6
+    key: "6"
+    name: "6"
+  - id: 7
+    key: "7"
+    name: "7"
+  - id: 8
+    key: "8"
+    name: "8"
+  - id: 9
+    key: "9"
+    name: "9"
+  - id: 10
+    key: "0"
+    name: "10"
+
+# =============================================================================
+# Application Configuration
+# =============================================================================
+swaywm_applications: []
+#  - application:
+#    class: "Firefox"
+#    name: "firefox"
+#    workspace: 1 # bind application to a specific workspace
+#    on_startup: false
+
+swaywm_run_on_startup: []
+#  - foo
+#  - bar
+
+# Exec Always Commands (executed on every sway reload/restart)
+swaywm_exec_always: []
+#  - "swaymsg workspace 1"
+
+# =============================================================================
+# Input Configuration
+# =============================================================================
+swaywm_input_devices: []
+# Example input device configuration:
+#  - identifier: "*"
+#    xkb_layout: "us"
+#    xkb_model: "pc105"
+#    xkb_numlock: "enable"
+#    xkb_options: "kpdl:dot"
+#  - identifier: "1739:52745:SYNA30BE:00_06CB:CE09"
+#    natural_scroll: "disabled"
+#    tap: "enabled"
+
+# =============================================================================
+# Output Configuration
+# =============================================================================
+swaywm_outputs: []
+# Example output configuration:
+#  - identifier: "*"
+#    bg: "/path/to/wallpaper fill"
+#  - identifier: "DP-6"
+#    pos: "7040 1440"
+#  - identifier: "eDP-1"
+#    pos: "0 1440"
+
+# =============================================================================
+# Seat Configuration
+# =============================================================================
+swaywm_seats: []
+# Example seat configuration:
+#  - identifier: "*"
+
+# =============================================================================
+# Window Rules
+# =============================================================================
+swaywm_window_rules: []
+# Example window rules:
+#  - criteria: 'class="KeePassXC" instance="keepassxc"'
+#    action: "move container to workspace 5"
+#  - criteria: 'class="VirtualBox Machine" title=".*: 1"'
+#    action: "move container to workspace 6"
+
+# =============================================================================
+# Bar Configuration
+# =============================================================================
+swaywm_bar_command: "waybar"
+swaywm_bar_swaybar_command: "/usr/bin/waybar"
+
+# =============================================================================
+# waybar Configuration
+# =============================================================================
+swaywm_waybar_config_dir: "{{ ansible_env.HOME }}/.config/waybar"
+swaywm_waybar_scripts_dir: "{{ swaywm_waybar_config_dir }}/scripts"
+
+# waybar keyboard toggle script
+swaywm_waybar_keyboard_toggle_enabled: true
+
+# waybar Theme Colors
+swaywm_waybar_colors:
+  primary_bg: "#3a4553"
+  secondary_bg: "#282828"
+  accent_bg: "#2e3440"
+  text_color: "#ebdbb2"
+  separator_color: "#2e3440"
+  # Workspace colors
+  workspace_inactive: "#928374"
+  workspace_empty: "#504945"
+  workspace_hover: "#d79921"
+  workspace_special: "#fabd2f"
+  workspace_urgent: "#cc241d"
+  # Module border color
+  module_border: "#445947"
+
+# =============================================================================
+# Swayidle Service Configuration
+# =============================================================================
+swaywm_swayidle_enabled: true
+swaywm_swayidle_timeout_lock: 300
+swaywm_swayidle_timeout_display: 600
+
+# =============================================================================
+# Swaylock Configuration
+# =============================================================================
+swaywm_swaylock_config_dir: "{{ ansible_env.HOME }}/.config/swaylock"
+swaywm_swaylock_config_file: "{{ swaywm_swaylock_config_dir }}/config"
+
+swaywm_swaylock:
+  color: "282828"
+  font_size: 24
+  indicator_radius: 80
+  indicator_caps_lock: true
+  inside_caps_lock_color: "282828"
+  inside_clear_color: "282828"
+  inside_color: "282828"
+  inside_ver_color: "282828"
+  inside_wrong_color: "282828"
+  key_hl_color: "b8bb26"
+  layout_bg_color: "282828"
+  layout_border_color: "3c3836"
+  layout_text_color: "d5c4a1"
+  line_uses_inside: true
+  ring_caps_lock_color: "3c3836"
+  ring_clear_color: "fb4934"
+  ring_color: "3c3836"
+  ring_ver_color: "b8bb26"
+  ring_wrong_color: "fb4934"
+  scaling: "fill"
+  separator_color: "00000000"
+  show_failed_attempts: true
+  text_caps_lock_color: "d5c4a1"
+  text_clear_color: "d5c4a1"
+  text_color: "d5c4a1"
+  text_ver_color: "d5c4a1"
+  text_wrong_color: "d5c4a1"

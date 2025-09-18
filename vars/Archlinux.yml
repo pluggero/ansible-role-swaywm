@@ -1,0 +1,9 @@
+---
+swaywm_dep_pkgs:
+  - swaylock
+  - swayidle
+  - waybar
+  - wl-clipboard
+
+swaywm_distro_pkgs:
+  - sway

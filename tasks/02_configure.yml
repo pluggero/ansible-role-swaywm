@@ -1,0 +1,96 @@
+---
+- name: Configure swaywm
+  block:
+    - name: Ensure config folder exists
+      ansible.builtin.file:
+        path: "{{ swaywm_config_dir }}"
+        state: directory
+        mode: "0750"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add swaywm config file
+      ansible.builtin.template:
+        src: "{{ role_path }}/templates/config.j2"
+        dest: "{{ swaywm_config_dir }}/config"
+        mode: "0600"
+        backup: true
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add images
+      ansible.builtin.copy:
+        src: "{{ image.src }}"
+        dest: "{{ image.dest }}"
+        mode: 0644
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      loop:
+        - src: "{{ swaywm_wallpaper_image_local }}"
+          dest: "{{ swaywm_wallpaper_image }}"
+        - src: "{{ swaywm_lockscreen_image_local }}"
+          dest: "{{ swaywm_lockscreen_image }}"
+      loop_control:
+        loop_var: image
+      become: true
+
+- name: Configure waybar
+  block:
+    - name: Ensure waybar config folder exists
+      ansible.builtin.file:
+        path: "{{ swaywm_waybar_config_dir }}"
+        state: directory
+        mode: "0750"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Ensure waybar scripts folder exists
+      ansible.builtin.file:
+        path: "{{ swaywm_waybar_scripts_dir }}"
+        state: directory
+        mode: "0750"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add waybar config file
+      ansible.builtin.template:
+        src: "waybar.j2"
+        dest: "{{ swaywm_waybar_config_dir }}/config"
+        mode: "0600"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add waybar style file
+      ansible.builtin.template:
+        src: "{{ role_path }}/templates/waybar-style.css.j2"
+        dest: "{{ swaywm_waybar_config_dir }}/style.css"
+        mode: "0600"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Deploy keyboard toggle script
+      ansible.builtin.template:
+        src: "{{ role_path }}/templates/toggle_keyboard.py.j2"
+        dest: "{{ swaywm_waybar_scripts_dir }}/toggle_keyboard.py"
+        mode: "0755"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+      when: swaywm_waybar_keyboard_toggle_enabled | bool
+
+- name: Configure swaylock
+  block:
+    - name: Ensure swaylock config folder exists
+      ansible.builtin.file:
+        path: "{{ swaywm_swaylock_config_dir }}"
+        state: directory
+        mode: "0750"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add swaylock config file
+      ansible.builtin.template:
+        src: "{{ role_path }}/templates/swaylock.j2"
+        dest: "{{ swaywm_swaylock_config_file }}"
+        mode: "0600"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"

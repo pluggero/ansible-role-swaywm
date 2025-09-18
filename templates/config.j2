@@ -1,0 +1,238 @@
+# =============================================================================
+# Variables & Setup
+# =============================================================================
+set $mod {{ swaywm_modifier }}
+
+# Workspace Variables
+{% for workspace in swaywm_workspaces %}
+set $workspace{{ workspace.id }} "{{ workspace.id }}"
+{% endfor %}
+
+# =============================================================================
+# Core Configuration
+# =============================================================================
+font pango:{{ swaywm_font.family }} {{ swaywm_font.size }}
+
+# Gaps
+gaps inner {{ swaywm_gaps.inner }}
+gaps outer {{ swaywm_gaps.outer }}
+
+# Focus Settings
+focus_follows_mouse {{ swaywm_focus_follows_mouse | ansible.builtin.ternary('yes', 'no' ) }}
+focus_wrapping no
+focus_on_window_activation smart
+mouse_warping output
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Workspace Layout
+default_orientation horizontal
+workspace_layout default
+workspace_auto_back_and_forth no
+
+# Border Layout
+default_border {{ swaywm_borders.default }} {{ swaywm_borders.width }}
+default_floating_border {{ swaywm_borders.default_floating }} {{ swaywm_borders.width }}
+hide_edge_borders {{ swaywm_borders.hide_edge_borders }}
+
+# =============================================================================
+# Colors
+# =============================================================================
+client.focused {{ swaywm_colors.focused.border }} {{ swaywm_colors.focused.background }} {{ swaywm_colors.focused.text }} {{ swaywm_colors.focused.indicator }} {{ swaywm_colors.focused.child_border }}
+client.focused_inactive {{ swaywm_colors.focused_inactive.border }} {{ swaywm_colors.focused_inactive.background }} {{ swaywm_colors.focused_inactive.text }} {{ swaywm_colors.focused_inactive.indicator }} {{ swaywm_colors.focused_inactive.child_border }}
+client.unfocused {{ swaywm_colors.unfocused.border }} {{ swaywm_colors.unfocused.background }} {{ swaywm_colors.unfocused.text }} {{ swaywm_colors.unfocused.indicator }} {{ swaywm_colors.unfocused.child_border }}
+client.urgent {{ swaywm_colors.urgent.border }} {{ swaywm_colors.urgent.background }} {{ swaywm_colors.urgent.text }} {{ swaywm_colors.urgent.indicator }} {{ swaywm_colors.urgent.child_border }}
+client.placeholder {{ swaywm_colors.placeholder.border }} {{ swaywm_colors.placeholder.background }} {{ swaywm_colors.placeholder.text }} {{ swaywm_colors.placeholder.indicator }} {{ swaywm_colors.placeholder.child_border }}
+client.background {{ swaywm_colors.background }}
+
+# =============================================================================
+# Keybindings
+# =============================================================================
+# Workspace Switching
+{% for workspace in swaywm_workspaces %}
+bindsym $mod+{{ workspace.key }} workspace $workspace{{ workspace.id }}
+{% endfor %}
+
+# Move Container to Workspace
+{% for workspace in swaywm_workspaces %}
+bindsym $mod+Shift+{{ workspace.key }} move container to workspace $workspace{{ workspace.id }}
+{% endfor %}
+
+# Application Execution
+{% for keybinding in swaywm_keybindings_exec %}
+bindsym {{ keybinding.key }} exec {{ keybinding.exec }}
+{% endfor %}
+
+# Window Focus
+{% for keybinding in swaywm_keybindings_focus %}
+bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+
+# Window Movement
+{% for keybinding in swaywm_keybindings_move %}
+bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+
+# Layout Control
+{% for keybinding in swaywm_keybindings_layout %}
+bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+
+# System Control
+{% for keybinding in swaywm_keybindings_system %}
+bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+
+# Media/Hardware Controls
+{% if swaywm_enable_media_keys %}
+{% for name, keybinding in swaywm_keybindings_media.items() %}
+bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+{% endif %}
+
+# Quick Resize (outside resize mode)
+{% for keybinding in swaywm_keybindings_quick_resize %}
+bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+
+# Resize Mode
+bindsym {{ swaywm_keybindings_resize.enter_key }} mode "resize"
+mode "resize" {
+{% for keybinding in swaywm_keybindings_resize.bindings %}
+  bindsym {{ keybinding.key }} {{ keybinding.action }}
+{% endfor %}
+}
+
+# =============================================================================
+# Input Configuration
+# =============================================================================
+{% for input_device in swaywm_input_devices %}
+input "{{ input_device.identifier }}" {
+{%     if input_device.xkb_layout is defined %}
+  xkb_layout {{ input_device.xkb_layout }}
+{%     endif %}
+{%     if input_device.xkb_model is defined %}
+  xkb_model {{ input_device.xkb_model }}
+{%     endif %}
+{%     if input_device.xkb_numlock is defined %}
+  xkb_numlock {{ input_device.xkb_numlock }}
+{%     endif %}
+{%     if input_device.xkb_options is defined %}
+  xkb_options {{ input_device.xkb_options }}
+{%     endif %}
+{%     if input_device.xkb_variant is defined %}
+  xkb_variant {{ input_device.xkb_variant }}
+{%     endif %}
+{%     if input_device.natural_scroll is defined %}
+  natural_scroll {{ input_device.natural_scroll }}
+{%     endif %}
+{%     if input_device.tap is defined %}
+  tap {{ input_device.tap }}
+{%     endif %}
+}
+{% endfor %}
+
+# =============================================================================
+# Output Configuration
+# =============================================================================
+output "*" {
+  bg {{ swaywm_wallpaper_image }} fill
+}
+
+
+{% for output in swaywm_outputs %}
+output "{{ output.identifier }}" {
+{%     if output.pos is defined %}
+  pos {{ output.pos }}
+{%     endif %}
+{%     if output.bg is defined %}
+  bg {{ output.bg }}
+{%     endif %}
+{%     if output.mode is defined %}
+  mode {{ output.mode }}
+{%     endif %}
+{%     if output.scale is defined %}
+  scale {{ output.scale }}
+{%     endif %}
+{%     if output.transform is defined %}
+  transform {{ output.transform }}
+{%     endif %}
+}
+{% endfor %}
+
+# =============================================================================
+# Seat Configuration
+# =============================================================================
+{% for seat in swaywm_seats %}
+seat "{{ seat.identifier }}" {
+{%     for option, value in seat.items() %}
+{%         if option != 'identifier' %}
+  {{ option }} {{ value }}
+{%         endif %}
+{%     endfor %}
+}
+{% endfor %}
+
+# =============================================================================
+# Application Setup
+# =============================================================================
+
+# Application Workspace Assignment
+{% for application in swaywm_applications %}
+assign [class="{{ application.class }}"] $workspace{{ application.workspace }}
+{% endfor %}
+
+# Window Rules (for_window)
+{% for rule in swaywm_window_rules %}
+for_window [{{ rule.criteria }}] {{ rule.action }}
+{% endfor %}
+
+# =============================================================================
+# Status Bar Configuration
+# =============================================================================
+{% if swaywm_bar_command == "waybar" %}
+bar {
+  swaybar_command {{ swaywm_bar_swaybar_command }}
+}
+{% else %}
+bar {
+  id main
+  font pango:{{ swaywm_font.family }} {{ swaywm_font.size }}
+  status_command {{ swaywm_bar_command }}
+  position top
+  mode dock
+  modifier None
+  colors {
+    background {{ swaywm_bar_colors.background }}
+    statusline {{ swaywm_bar_colors.statusline }}
+    separator {{ swaywm_bar_colors.separator }}
+    focused_workspace {{ swaywm_bar_colors.focused_workspace.border }} {{ swaywm_bar_colors.focused_workspace.background }} {{ swaywm_bar_colors.focused_workspace.text }}
+    active_workspace {{ swaywm_bar_colors.active_workspace.border }} {{ swaywm_bar_colors.active_workspace.background }} {{ swaywm_bar_colors.active_workspace.text }}
+    inactive_workspace {{ swaywm_bar_colors.inactive_workspace.border }} {{ swaywm_bar_colors.inactive_workspace.background }} {{ swaywm_bar_colors.inactive_workspace.text }}
+    urgent_workspace {{ swaywm_bar_colors.urgent_workspace.border }} {{ swaywm_bar_colors.urgent_workspace.background }} {{ swaywm_bar_colors.urgent_workspace.text }}
+    binding_mode {{ swaywm_bar_colors.binding_mode.border }} {{ swaywm_bar_colors.binding_mode.background }} {{ swaywm_bar_colors.binding_mode.text }}
+  }
+}
+{% endif %}
+
+# =============================================================================
+# Startup Commands
+# =============================================================================
+# System Setup (always executed)
+{% for command in swaywm_exec_always %}
+exec_always {{ command }}
+{% endfor %}
+
+# Application Startup
+{% for application in swaywm_applications if application.on_startup %}
+exec sleep 5 && {{ application.name }}
+{% endfor %}
+
+{% for app in swaywm_run_on_startup %}
+exec sleep 12 && {{ app }}
+{% endfor %}
+
+# https://github.com/swaywm/sway/wiki/Systemd-integration#managing-user-applications-with-systemd
+exec "systemctl --user import-environment {,WAYLAND_}DISPLAY SWAYSOCK; systemctl --user start sway-session.target"
+exec swaymsg -t subscribe '["shutdown"]' && systemctl --user stop sway-session.target

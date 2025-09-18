@@ -1,0 +1,15 @@
+[Unit]
+Description=Idle manager for Wayland
+Documentation=man:swayidle(1)
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/swayidle -w \
+            timeout {{ swaywm_swayidle_timeout_lock }} '/usr/bin/loginctl lock-session && /usr/bin/swaylock -f' \
+            timeout {{ swaywm_swayidle_timeout_display }} '/usr/bin/swaymsg "output * power off"' \
+            resume '/usr/bin/swaymsg "output * power on"' \
+            before-sleep '/usr/bin/loginctl lock-session && /usr/bin/swaylock -f'
+
+[Install]
+WantedBy=sway-session.target

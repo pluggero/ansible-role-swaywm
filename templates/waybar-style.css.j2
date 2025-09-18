@@ -1,0 +1,95 @@
+* {
+    border: none;
+    font-family: {{ swaywm_font.family }};
+    font-weight: 700;
+    font-size: {{ swaywm_font.size + 3 }}px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+tooltip {
+    background: {{ swaywm_waybar_colors.secondary_bg }};
+    border-radius: 4px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: {{ swaywm_waybar_colors.text_color }};
+    color: {{ swaywm_waybar_colors.text_color }};
+}
+
+#workspaces button {
+    border: none;
+    transition-duration: 0.3s;
+    background: none;
+    box-shadow: inherit;
+    text-shadow: inherit;
+    color: {{ swaywm_waybar_colors.workspace_inactive }};
+    padding: 3px;
+}
+
+#workspaces button.active {
+    color: {{ swaywm_waybar_colors.text_color }};
+}
+
+#workspaces button.persistent {
+    color: {{ swaywm_waybar_colors.workspace_inactive }};
+}
+
+#workspaces button.empty {
+    color: {{ swaywm_waybar_colors.workspace_empty }};
+}
+
+#workspaces button:hover {
+    color: {{ swaywm_waybar_colors.workspace_hover }};
+}
+
+#workspaces button.special {
+    color: {{ swaywm_waybar_colors.workspace_special }};
+}
+
+#workspaces button.visible {
+    color: {{ swaywm_waybar_colors.text_color }};
+}
+
+#workspaces button.urgent {
+    color: {{ swaywm_waybar_colors.workspace_urgent }};
+}
+
+#workspaces,
+#network,
+#pulseaudio,
+#idle_inhibitor,
+#custom-keyboard,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#battery,
+#clock,
+#tray > .active {
+    background: {{ swaywm_waybar_colors.secondary_bg }};
+    border-radius: 4px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: {{ swaywm_waybar_colors.module_border }};
+    margin-right: 4px;
+    margin-left: 4px;
+    color: {{ swaywm_waybar_colors.text_color }};
+    padding: 0px 5px;
+}
+
+#idle_inhibitor {
+    border-radius: 4px 0px 0px 4px;
+    border-right: 0px;
+    margin-right: 0px;
+}
+
+#custom-keyboard {
+    border-radius: 0px 4px 4px 0px;
+    border-left: 0px;
+    margin-left: 0px;
+}
