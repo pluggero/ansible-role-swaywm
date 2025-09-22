@@ -94,3 +94,21 @@
         mode: "0600"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
+
+- name: Configure XDG Desktop Portal
+  block:
+    - name: Ensure XDG Desktop Portal config folder exists
+      ansible.builtin.file:
+        path: "{{ swaywm_xdg_desktop_portal_config_dir }}"
+        state: directory
+        mode: "0750"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Add XDG Desktop Portal config file
+      ansible.builtin.copy:
+        src: "xdg-desktop-portal-wlr-config"
+        dest: "{{ swaywm_xdg_desktop_portal_config_file }}"
+        mode: "0600"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"

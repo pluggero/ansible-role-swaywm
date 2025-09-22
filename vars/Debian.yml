@@ -2,8 +2,12 @@
 swaywm_dep_pkgs:
   - swaylock
   - swayidle
+  - swaybg
   - waybar
   - wl-clipboard
+  - slurp
+  - xdg-desktop-portal
+  - xdg-desktop-portal-wlr
 
 swaywm_distro_pkgs:
   - sway
