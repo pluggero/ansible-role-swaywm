@@ -413,3 +413,9 @@ swaywm_swaylock:
   text_color: "d5c4a1"
   text_ver_color: "d5c4a1"
   text_wrong_color: "d5c4a1"
+
+# =============================================================================
+# XDG Desktop Portal Configuration
+# =============================================================================
+swaywm_xdg_desktop_portal_config_dir: "{{ ansible_env.HOME }}/.config/xdg-desktop-portal-wlr"
+swaywm_xdg_desktop_portal_config_file: "{{ swaywm_xdg_desktop_portal_config_dir }}/config"
