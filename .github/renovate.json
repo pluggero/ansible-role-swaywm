@@ -66,7 +66,7 @@
       ],
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "pluggero/vagrant-debian12-ansible",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "loose"
     },
     {
       "customType": "regex",
@@ -78,7 +78,7 @@
       ],
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "pluggero/vagrant-archlinux-ansible",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "loose"
     },
     {
       "customType": "regex",
