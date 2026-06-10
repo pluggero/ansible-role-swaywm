@@ -8,6 +8,7 @@ swaywm_dep_pkgs:
   - slurp
   - xdg-desktop-portal
   - xdg-desktop-portal-wlr
+  - xwayland
 
 swaywm_distro_pkgs:
   - sway
