@@ -136,11 +136,6 @@ input "{{ input_device.identifier }}" {
 # =============================================================================
 # Output Configuration
 # =============================================================================
-output "*" {
-  bg {{ swaywm_wallpaper_image }} fill
-}
-
-
 {% for output in swaywm_outputs %}
 output "{{ output.identifier }}" {
 {%     if output.pos is defined %}

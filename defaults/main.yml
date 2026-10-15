@@ -315,7 +315,9 @@ swaywm_input_devices: []
 # =============================================================================
 # Output Configuration
 # =============================================================================
-swaywm_outputs: []
+swaywm_outputs:
+  - identifier: "*"
+    bg: "{{ swaywm_wallpaper_image }} fill"
 # Example output configuration:
 #  - identifier: "*"
 #    bg: "/path/to/wallpaper fill"
