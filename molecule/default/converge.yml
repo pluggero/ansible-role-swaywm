@@ -16,4 +16,4 @@
       when: ansible_os_family == 'Debian'
 
   roles:
-    - role: pluggero.swaywm
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
