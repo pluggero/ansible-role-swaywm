@@ -157,6 +157,12 @@ output "{{ output.identifier }}" {
 {% endfor %}
 
 # =============================================================================
+# Lid Switch Handling
+# =============================================================================
+bindswitch --reload --locked lid:on  output {{ swaywm_internal_output }} disable
+bindswitch --reload --locked lid:off output {{ swaywm_internal_output }} enable
+
+# =============================================================================
 # Seat Configuration
 # =============================================================================
 {% for seat in swaywm_seats %}
