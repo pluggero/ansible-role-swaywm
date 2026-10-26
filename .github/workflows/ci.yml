@@ -71,9 +71,6 @@ jobs:
       - name: Install test dependencies
         run: pip3 install -r requirements.txt
 
-      - name: Always include phased updates
-        run: echo 'APT::Get::Always-Include-Phased-Updates "true";' | sudo tee /etc/apt/apt.conf.d/99-phased-updates
-
       - name: Unload KVM kernel modules
         run: |
           echo "Unloading KVM kernel modules to avoid conflicts with VirtualBox..."
