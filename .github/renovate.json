@@ -22,6 +22,10 @@
       "automerge": false
     },
     {
+      "matchDatasources": ["github-runners"],
+      "automerge": false
+    },
+    {
        "matchManagers": ["ansible-galaxy", "custom.regex"],
        "matchPackageNames": ["pluggero/ansible-role-nerdfonts", "pluggero.nerdfonts"],
        "groupName": "nerdfonts"
