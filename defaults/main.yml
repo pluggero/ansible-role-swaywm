@@ -326,6 +326,9 @@ swaywm_outputs:
 #  - identifier: "eDP-1"
 #    pos: "0 1440"
 
+# Laptop panel output name
+swaywm_internal_output: "eDP"
+
 # =============================================================================
 # Seat Configuration
 # =============================================================================

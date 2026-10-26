@@ -25,7 +25,9 @@
         mode: "0700"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-      notify: Restart swayidle service
+      notify:
+        - Reload systemd user daemon
+        - Restart swayidle service
 
     - name: Enable swayidle service
       ansible.builtin.systemd:
