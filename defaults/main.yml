@@ -326,7 +326,7 @@ swaywm_outputs:
 #  - identifier: "eDP-1"
 #    pos: "0 1440"
 
-# Laptop panel output name
+# Laptop panel output name (see `swaymsg -t get_outputs`)
 swaywm_internal_output: "eDP-1"
 
 # =============================================================================

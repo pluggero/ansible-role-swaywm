@@ -159,8 +159,8 @@ output "{{ output.identifier }}" {
 # =============================================================================
 # Lid Switch Handling
 # =============================================================================
-bindswitch --reload --locked lid:on  output {{ swaywm_internal_output }} disable
-bindswitch --reload --locked lid:off output {{ swaywm_internal_output }} enable
+bindswitch --reload --locked lid:on  output {{ swaywm_internal_output }} power off
+bindswitch --reload --locked lid:off output {{ swaywm_internal_output }} power on
 
 # =============================================================================
 # Seat Configuration
