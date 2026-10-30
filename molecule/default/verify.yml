@@ -1,0 +1,35 @@
+---
+- name: Verify
+  hosts: all
+
+  vars:
+    ansible_user: ansible
+    ansible_password: ansible
+    ansible_become_password: ansible
+
+  tasks:
+    - name: Read rendered waybar config
+      ansible.builtin.slurp:
+        path: "{{ ansible_env.HOME }}/.config/waybar/config"
+      register: swaywm_waybar_config_raw
+
+    - name: Parse rendered waybar config
+      ansible.builtin.set_fact:
+        swaywm_waybar_config_parsed: "{{ (swaywm_waybar_config_raw.content | b64decode | from_json)[0] }}"
+
+    - name: Assert custom widget was added to the bar
+      ansible.builtin.assert:
+        that:
+          - "'custom/molecule_test' in swaywm_waybar_config_parsed"
+          - "'custom/molecule_test' in swaywm_waybar_config_parsed['modules-right']"
+
+    - name: Stat rendered style.css
+      ansible.builtin.stat:
+        path: "{{ ansible_env.HOME }}/.config/waybar/style.css"
+      register: swaywm_waybar_style_stat
+
+    - name: Assert style.css was created and is non-empty
+      ansible.builtin.assert:
+        that:
+          - swaywm_waybar_style_stat.stat.exists
+          - swaywm_waybar_style_stat.stat.size > 0

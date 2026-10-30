@@ -6,6 +6,17 @@
     ansible_user: ansible
     ansible_password: ansible
     ansible_become_password: ansible
+    # Minimal override proving a custom widget can be added to the bar
+    swaywm_waybar_modules_right:
+      - "clock#date"
+      - "custom/molecule_test"
+    swaywm_waybar_modules:
+      "clock#date":
+        format: "{:%Y-%m-%d}"
+      "custom/molecule_test":
+        exec: "echo test"
+        interval: 30
+        tooltip: false
 
   pre_tasks:
     - name: Update apt cache
